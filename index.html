@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ECF5FD" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#020407" media="(prefers-color-scheme: dark)" />
     <meta name="description" content="A small collection of offline-capable calculators for everyday bench work." />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
@@ -19,51 +19,56 @@
     -->
 
     <style>
+      /* ==========================================================
+         Laboratory Calculators — technical-instrument grammar
+         Compiled method: .styleseed/bundles/hub.md · lock: STYLESEED.md
+         Palette: cobalt-instrument, key #175CD3 · deep · cool
+         Shared with the three calculators. Each tool keeps one
+         categorical identity colour; cobalt owns action and focus.
+         ========================================================== */
+
       :root {
         color-scheme: light dark;
 
-        --bg: #f6f7f5;
-        --bg-accent: #eef2ee;
-        --surface: #ffffff;
-        --surface-hover: #fcfdfc;
-        --ink: #16241f;
-        --ink-soft: #55635d;
-        --ink-faint: #7d8a84;
-        --line: #dfe5e1;
-        --line-strong: #cbd5cf;
-        --shadow: 0 1px 2px rgba(20, 40, 34, 0.05), 0 8px 24px rgba(20, 40, 34, 0.06);
-        --shadow-lift: 0 2px 4px rgba(20, 40, 34, 0.07), 0 16px 40px rgba(20, 40, 34, 0.11);
+        --bg: #ECF5FD;
+        --surface: #FAFDFF;
+        --chrome: #D8E3EC;
+        --ink: #090C0E;
+        --muted: #4B5055;
+        --line: #B1BCC7;
+        --line-faint: rgba(177, 188, 199, 0.45);
+        --primary: #0343AA;
+        --primary-fg: #F9FCFF;
+        --focus: #0343AA;
 
-        --pipette: #0d6f67;
-        --molarity: #3157a4;
-        --nanoparticle: #b27e26;
+        /* Categorical identity — stable, repeated, one per tool. */
+        --pipette: #0D6F67;
+        --molarity: #3157A4;
+        --nanoparticle: #B27E26;
 
-        --pipette-wash: #e2f1ef;
-        --molarity-wash: #e5ecf9;
-        --nanoparticle-wash: #f7edda;
+        --radius: 4px;
+        --ease: 120ms cubic-bezier(0.2, 0, 0.2, 1);
+
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #0b1220;
-          --bg-accent: #0e1728;
-          --surface: #141d2e;
-          --surface-hover: #182338;
-          --ink: #e9eef4;
-          --ink-soft: #a6b3c4;
-          --ink-faint: #7b8798;
-          --line: #24314a;
-          --line-strong: #32415e;
-          --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.32);
-          --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.45), 0 16px 40px rgba(0, 0, 0, 0.45);
+          --bg: #020407;
+          --surface: #0A0D0F;
+          --chrome: #131A21;
+          --ink: #EFF2F6;
+          --muted: #A0A5AA;
+          --line: #303942;
+          --line-faint: rgba(48, 57, 66, 0.7);
+          --primary: #649CFF;
+          --primary-fg: #020305;
+          --focus: #95C9FF;
 
-          --pipette: #4fbfb2;
-          --molarity: #7fa5e8;
-          --nanoparticle: #e0ab55;
-
-          --pipette-wash: #10302e;
-          --molarity-wash: #17253f;
-          --nanoparticle-wash: #33270f;
+          --pipette: #4FBFB2;
+          --molarity: #7FA5E8;
+          --nanoparticle: #E0AB55;
         }
       }
 
@@ -73,216 +78,190 @@
         box-sizing: border-box;
       }
 
-      html {
-        -webkit-text-size-adjust: 100%;
-      }
-
       body {
         margin: 0;
         min-height: 100vh;
-        padding: 2rem 1.15rem calc(2rem + env(safe-area-inset-bottom));
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-        background:
-          radial-gradient(1200px 520px at 50% -10%, var(--bg-accent), transparent 70%),
-          var(--bg);
+        background: var(--bg);
         color: var(--ink);
-        font: 400 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        text-rendering: optimizeLegibility;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", Roboto, sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
         -webkit-font-smoothing: antialiased;
       }
 
-      .page {
-        width: 100%;
-        max-width: 68rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.75rem;
-        flex: 1;
+      :focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+        border-radius: var(--radius);
       }
 
+      .page {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 64px 24px 80px;
+      }
+
+      /* ---------- Header ---------- */
       header {
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.65rem;
-        padding: 0.5rem 0 0.25rem;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 8px;
       }
 
       .mark {
-        width: 3rem;
-        height: 3rem;
-        display: grid;
-        place-items: center;
-        border-radius: 1rem;
-        background: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 16px;
         border: 1px solid var(--line);
-        box-shadow: var(--shadow);
-        color: var(--pipette);
+        border-radius: var(--radius);
+        color: var(--primary);
+        background: var(--surface);
       }
-
       .mark svg {
-        width: 1.75rem;
-        height: 1.75rem;
+        width: 18px;
+        height: 18px;
       }
 
       h1 {
-        margin: 0;
-        font-size: clamp(1.65rem, 5.5vw, 2.4rem);
-        font-weight: 650;
-        letter-spacing: -0.02em;
-        line-height: 1.15;
+        margin: 0 0 8px;
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
       }
 
       .tagline {
         margin: 0;
-        max-width: 34rem;
-        color: var(--ink-soft);
-        font-size: clamp(0.95rem, 3.4vw, 1.05rem);
+        max-width: 62ch;
+        color: var(--muted);
+        font-size: 15px;
       }
 
+      /* ---------- Tool rows — hairline separated, not floating cards ---------- */
       .cards {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        list-style: none;
+        display: flex;
+        flex-direction: column;
         margin: 0;
         padding: 0;
-      }
-
-      @media (min-width: 46rem) {
-        .cards {
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.25rem;
-        }
+        list-style: none;
       }
 
       .card {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        min-height: 6.5rem;
-        padding: 1.35rem 1.3rem 1.45rem;
-        border: 1px solid var(--line);
-        border-radius: 1.15rem;
-        background: var(--surface);
-        box-shadow: var(--shadow);
+        position: relative;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: start;
+        column-gap: 16px;
+        row-gap: 4px;
+        padding: 20px 12px 20px 16px;
+        border: 0;
+        border-bottom: 1px solid var(--line-faint);
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
         color: inherit;
         text-decoration: none;
-        position: relative;
-        overflow: hidden;
-        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease,
-          background-color 160ms ease;
+        transition: background var(--ease);
       }
 
+      /* The categorical marker: one fixed colour per tool. */
       .card::before {
         content: "";
         position: absolute;
-        inset: 0 0 auto 0;
-        height: 3px;
-        background: var(--accent);
+        left: 0;
+        top: 20px;
+        bottom: 20px;
+        width: 3px;
+        border-radius: 1px;
+        background: var(--tool);
       }
-
-      @media (min-width: 46rem) {
-        .card {
-          min-height: 15rem;
-        }
+      .card.pipette {
+        --tool: var(--pipette);
+      }
+      .card.molarity {
+        --tool: var(--molarity);
+      }
+      .card.nanoparticle {
+        --tool: var(--nanoparticle);
       }
 
       .card:hover {
-        border-color: var(--accent);
-        background: var(--surface-hover);
-      }
-
-      @media (hover: hover) and (min-width: 46rem) {
-        .card:hover {
-          transform: translateY(-3px);
-          box-shadow: var(--shadow-lift);
-        }
-      }
-
-      .card:focus-visible {
-        outline: 3px solid var(--accent);
-        outline-offset: 3px;
-      }
-
-      .card:active {
-        transform: translateY(0);
-        background: var(--surface-hover);
+        background: var(--surface);
       }
 
       .card-icon {
-        width: 3rem;
-        height: 3rem;
-        flex: none;
-        display: grid;
-        place-items: center;
-        border-radius: 0.9rem;
-        background: var(--wash);
-        color: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        color: var(--tool);
       }
-
       .card-icon svg {
-        width: 1.6rem;
-        height: 1.6rem;
+        width: 18px;
+        height: 18px;
       }
 
       .card h2 {
+        grid-column: 2;
         margin: 0;
-        font-size: 1.15rem;
-        font-weight: 620;
-        letter-spacing: -0.01em;
-        line-height: 1.25;
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.35;
       }
 
       .card p {
+        grid-column: 2;
         margin: 0;
-        color: var(--ink-soft);
-        font-size: 0.95rem;
-        flex: 1;
+        max-width: 54ch;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
       }
 
       .card-open {
-        display: inline-flex;
+        grid-column: 3;
+        grid-row: 1 / span 2;
+        align-self: center;
+        display: flex;
         align-items: center;
-        gap: 0.4rem;
-        margin-top: 0.15rem;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--accent);
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        color: var(--muted);
+        transition: color var(--ease);
       }
-
       .card-open svg {
-        width: 0.85rem;
-        height: 0.85rem;
-        transition: transform 160ms ease;
+        width: 16px;
+        height: 16px;
+      }
+      .card:hover .card-open {
+        color: var(--tool);
       }
 
-      .card:hover .card-open svg {
-        transform: translateX(3px);
-      }
-
-      .pipette {
-        --accent: var(--pipette);
-        --wash: var(--pipette-wash);
-      }
-
-      .molarity {
-        --accent: var(--molarity);
-        --wash: var(--molarity-wash);
-      }
-
-      .nanoparticle {
-        --accent: var(--nanoparticle);
-        --wash: var(--nanoparticle-wash);
+      @media (max-width: 560px) {
+        .page {
+          padding: 40px 20px 64px;
+        }
+        h1 {
+          font-size: 22px;
+        }
+        .card {
+          column-gap: 12px;
+          padding: 18px 8px 18px 14px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        * {
-          transition: none !important;
+        *,
+        *::before,
+        *::after {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
         }
       }
     </style>

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "hub",
+  "target": { "kind": "route", "locator": "/" },
+  "selection": {
+    "grammar": "technical-instrument",
+    "adapter": "product-ui",
+    "domain": "productivity",
+    "page": "landing",
+    "recipe": "developer-platform",
+    "palette": "cobalt-instrument",
+    "profile": "technical",
+    "fallback": "technical-instrument"
+  },
+  "decisions": {
+    "primaryDecision": "Which bench tool do I need right now.",
+    "primaryAction": "Open the right calculator.",
+    "signatureMove": "Three hairline-ruled rows, each keeping its own categorical identity colour as a left marker."
+  },
+  "implementation": { "sourceRoots": ["index.html"], "tokenFiles": ["index.html"] },
+  "validation": {
+    "scoreFloor": 85,
+    "requiredRenders": [
+      { "id": "narrow-light", "state": "loaded", "viewport": { "width": 390, "height": 844 } },
+      { "id": "wide-light", "state": "loaded", "viewport": { "width": 1280, "height": 900 } },
+      { "id": "narrow-error", "state": "error", "viewport": { "width": 390, "height": 844 } }
+    ],
+    "temporal": { "required": false, "scenarios": [] },
+    "humanAcceptance": true
+  }
+}
